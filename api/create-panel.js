@@ -1,16 +1,24 @@
 // api/create-panel.js
-const fetch = require('node-fetch'); // node-fetch perlu diinstal, lihat package.json di Langkah 5
+const fetch = require('node-fetch');
 
 module.exports = async (req, res) => {
-    // Pastikan ini adalah POST request
     if (req.method !== 'POST') {
         res.status(405).json({ error: 'Method Not Allowed' });
         return;
     }
 
     try {
-        // Ambil data dari body request frontend
         const { username, plan, ram, disk, cpu } = req.body;
+
+        // --- TAMBAHKAN BARIS DEBUGGING INI ---
+        console.log('--- Checking Environment Variables ---');
+        console.log('PTERO_EGG_ID:', process.env.PTERO_EGG_ID);
+        console.log('PTERO_NEST_ID:', process.env.PTERO_NEST_ID);
+        console.log('PTERO_LOCATION_ID:', process.env.PTERO_LOCATION_ID);
+        console.log('PTERO_DOMAIN:', process.env.PTERO_DOMAIN);
+        console.log('PTERO_API_KEY:', process.env.PTERO_API_KEY ? '****** (exists)' : '(missing/empty)');
+        console.log('------------------------------------');
+        // --- AKHIR BARIS DEBUGGING ---
 
         // Ambil Environment Variables dari Vercel
         const PTERO_EGG_ID = process.env.PTERO_EGG_ID;
@@ -24,6 +32,7 @@ module.exports = async (req, res) => {
             throw new Error("Missing Pterodactyl API configuration in Environment Variables.");
         }
 
+        // ... (kode selanjutnya tetap sama)
         // Fungsi bantu untuk membuat password acak
         function randomHex(len = 4) {
             let result = '';
@@ -122,7 +131,7 @@ module.exports = async (req, res) => {
                     cpu: parseInt(cpu),
                 },
                 feature_limits: {
-                    databases: 0,
+                    databases: 5,
                     backups: 5,
                     allocations: 5,
                 },
