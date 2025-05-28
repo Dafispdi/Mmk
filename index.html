@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Panel Creation Automation
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+  <style>
+   body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+ </head>
+ <body class="bg-gray-50 min-h-screen flex flex-col">
+  <header class="bg-white shadow-md">
+   <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+    <h1 class="text-2xl font-semibold text-indigo-600">
+     Auto Panel Creator
+    </h1>
+    <nav class="space-x-4 hidden md:flex">
+     <a class="text-gray-700 hover:text-indigo-600 font-medium" href="#create">
+      Create Panel
+     </a>
+     <a class="text-gray-700 hover:text-indigo-600 font-medium" href="#specs">
+      Specs Info
+     </a>
+     <a class="text-gray-700 hover:text-indigo-600 font-medium" href="#about">
+      About
+     </a>
+    </nav>
+    <button class="md:hidden text-gray-700 focus:outline-none" id="menu-btn">
+     <i class="fas fa-bars fa-lg">
+     </i>
+    </button>
+   </div>
+   <div class="hidden md:hidden bg-white border-t border-gray-200" id="mobile-menu">
+    <a class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium" href="#create">
+     Create Panel
+    </a>
+    <a class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium" href="#specs">
+     Specs Info
+    </a>
+    <a class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 font-medium" href="#about">
+     About
+    </a>
+   </div>
+  </header>
+  <main class="flex-grow container mx-auto px-4 py-8">
+   <section class="max-w-3xl mx-auto bg-white rounded-lg shadow p-6" id="create">
+    <h2 class="text-3xl font-semibold text-indigo-700 mb-6 text-center">
+     Create Your Panel
+    </h2>
+    <form class="space-y-6" id="panelForm">
+     <div>
+      <label class="block text-gray-700 font-medium mb-2" for="username">
+       Username
+      </label>
+      <input class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" id="username" name="username" placeholder="Enter username" required="" type="text"/>
+     </div>
+     <div>
+      <label class="block text-gray-700 font-medium mb-2" for="plan">
+       Select Plan
+      </label>
+      <select class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" id="plan" name="plan" required="">
+       <option disabled="" selected="" value="">
+        Select a plan
+       </option>
+       <option value="1gb-v2">
+        1GB - 40% CPU - 1GB Disk
+       </option>
+       <option value="2gb-v2">
+        2GB - 60% CPU - 1GB Disk
+       </option>
+       <option value="3gb-v2">
+        3GB - 80% CPU - 2GB Disk
+       </option>
+       <option value="4gb-v2">
+        4GB - 100% CPU - 2GB Disk
+       </option>
+       <option value="5gb-v2">
+        5GB - 120% CPU - 3GB Disk
+       </option>
+       <option value="6gb-v2">
+        6GB - 140% CPU - 3GB Disk
+       </option>
+       <option value="7gb-v2">
+        7GB - 160% CPU - 4GB Disk
+       </option>
+       <option value="8gb-v2">
+        8GB - 180% CPU - 4GB Disk
+       </option>
+       <option value="9gb-v2">
+        9GB - 200% CPU - 5GB Disk
+       </option>
+       <option value="10gb-v2">
+        10GB - 220% CPU - 5GB Disk
+       </option>
+       <option value="unlimited-v2">
+        Unlimited - Unlimited CPU &amp; Disk
+       </option>
+      </select>
+     </div>
+     <button class="w-full bg-indigo-600 text-white font-semibold py-3 rounded-md hover:bg-indigo-700 transition" type="submit">
+      Create Panel
+     </button>
+    </form>
+    <div class="mt-8 p-4 bg-green-50 border border-green-300 rounded-md hidden whitespace-pre-wrap font-mono text-sm" id="result">
+    </div>
+    <div class="mt-8 p-4 bg-red-50 border border-red-300 rounded-md hidden text-red-700 font-semibold" id="error">
+    </div>
+   </section>
+   <section class="max-w-4xl mx-auto mt-16" id="specs">
+    <h2 class="text-3xl font-semibold text-indigo-700 mb-6 text-center">
+     Plan Specifications
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+     <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+      <img alt="Illustration of 1GB RAM server with 40% CPU and 1GB disk space" class="mb-4 rounded" height="150" src="https://storage.googleapis.com/a1aa/image/173c4b71-61e3-4bcd-6ba9-0d364e5ca4c1.jpg" width="150"/>
+      <h3 class="text-xl font-semibold mb-2">
+       1GB Plan
+      </h3>
+      <p class="text-gray-600">
+       RAM: 1GB
+      </p>
+      <p class="text-gray-600">
+       CPU: 40%
+      </p>
+      <p class="text-gray-600">
+       Disk: 1GB
+      </p>
+     </div>
+     <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+      <img alt="Illustration of 2GB RAM server with 60% CPU and 1GB disk space" class="mb-4 rounded" height="150" src="https://storage.googleapis.com/a1aa/image/ee5b5a9a-699b-4a39-dfae-0ce0baf2d04c.jpg" width="150"/>
+      <h3 class="text-xl font-semibold mb-2">
+       2GB Plan
+      </h3>
+      <p class="text-gray-600">
+       RAM: 2GB
+      </p>
+      <p class="text-gray-600">
+       CPU: 60%
+      </p>
+      <p class="text-gray-600">
+       Disk: 1GB
+      </p>
+     </div>
+     <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+      <img alt="Illustration of 3GB RAM server with 80% CPU and 2GB disk space" class="mb-4 rounded" height="150" src="https://storage.googleapis.com/a1aa/image/7791892f-d248-4ae0-2889-807211a69dec.jpg" width="150"/>
+      <h3 class="text-xl font-semibold mb-2">
+       3GB Plan
+      </h3>
+      <p class="text-gray-600">
+       RAM: 3GB
+      </p>
+      <p class="text-gray-600">
+       CPU: 80%
+      </p>
+      <p class="text-gray-600">
+       Disk: 2GB
+      </p>
+     </div>
+     <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+      <img alt="Illustration of 4GB RAM server with 100% CPU and 2GB disk space" class="mb-4 rounded" height="150" src="https://storage.googleapis.com/a1aa/image/c34862d9-390c-4a1e-4081-6b2ce7cbe6c5.jpg" width="150"/>
+      <h3 class="text-xl font-semibold mb-2">
+       4GB Plan
+      </h3>
+      <p class="text-gray-600">
+       RAM: 4GB
+      </p>
+      <p class="text-gray-600">
+       CPU: 100%
+      </p>
+      <p class="text-gray-600">
+       Disk: 2GB
+      </p>
+     </div>
+     <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+      <img alt="Illustration of 5GB RAM server with 120% CPU and 3GB disk space" class="mb-4 rounded" height="150" src="https://storage.googleapis.com/a1aa/image/1d56e239-546f-49ee-7fb4-9d7798d9e13e.jpg" width="150"/>
+      <h3 class="text-xl font-semibold mb-2">
+       5GB Plan
+      </h3>
+      <p class="text-gray-600">
+       RAM: 5GB
+      </p>
+      <p class="text-gray-600">
+       CPU: 120%
+      </p>
+      <p class="text-gray-600">
+       Disk: 3GB
+      </p>
+     </div>
+     <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+      <img alt="Illustration of 6GB RAM server with 140% CPU and 3GB disk space" class="mb-4 rounded" height="150" src="https://storage.googleapis.com/a1aa/image/4f320ac5-1ad1-4c6e-7678-63bc2d405048.jpg" width="150"/>
+      <h3 class="text-xl font-semibold mb-2">
+       6GB Plan
+      </h3>
+      <p class="text-gray-600">
+       RAM: 6GB
+      </p>
+      <p class="text-gray-600">
+       CPU: 140%
+      </p>
+      <p class="text-gray-600">
+       Disk: 3GB
+      </p>
+     </div>
+     <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+      <img alt="Illustration of 7GB RAM server with 160% CPU and 4GB disk space" class="mb-4 rounded" height="150" src="https://storage.googleapis.com/a1aa/image/d258820e-d03f-4694-805b-5770e0d1a2a8.jpg" width="150"/>
+      <h3 class="text-xl font-semibold mb-2">
+       7GB Plan
+      </h3>
+      <p class="text-gray-600">
+       RAM: 7GB
+      </p>
+      <p class="text-gray-600">
+       CPU: 160%
+      </p>
+      <p class="text-gray-600">
+       Disk: 4GB
+      </p>
+     </div>
+     <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+      <img alt="Illustration of 8GB RAM server with 180% CPU and 4GB disk space" class="mb-4 rounded" height="150" src="https://storage.googleapis.com/a1aa/image/18a3c6d5-6ed6-4340-fa05-111014e283f7.jpg" width="150"/>
+      <h3 class="text-xl font-semibold mb-2">
+       8GB Plan
+      </h3>
+      <p class="text-gray-600">
+       RAM: 8GB
+      </p>
+      <p class="text-gray-600">
+       CPU: 180%
+      </p>
+      <p class="text-gray-600">
+       Disk: 4GB
+      </p>
+     </div>
+     <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+      <img alt="Illustration of 9GB RAM server with 200% CPU and 5GB disk space" class="mb-4 rounded" height="150" src="https://storage.googleapis.com/a1aa/image/16446c5c-0a0f-458f-6c2e-0ab01a6e3f86.jpg" width="150"/>
+      <h3 class="text-xl font-semibold mb-2">
+       9GB Plan
+      </h3>
+      <p class="text-gray-600">
+       RAM: 9GB
+      </p>
+      <p class="text-gray-600">
+       CPU: 200%
+      </p>
+      <p class="text-gray-600">
+       Disk: 5GB
+      </p>
+     </div>
+     <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+      <img alt="Illustration of 10GB RAM server with 220% CPU and 5GB disk space" class="mb-4 rounded" height="150" src="https://storage.googleapis.com/a1aa/image/9fa70f39-9d7d-41dc-2008-709870f8ab35.jpg" width="150"/>
+      <h3 class="text-xl font-semibold mb-2">
+       10GB Plan
+      </h3>
+      <p class="text-gray-600">
+       RAM: 10GB
+      </p>
+      <p class="text-gray-600">
+       CPU: 220%
+      </p>
+      <p class="text-gray-600">
+       Disk: 5GB
+      </p>
+     </div>
+     <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+      <img alt="Illustration of unlimited RAM, CPU, and disk server" class="mb-4 rounded" height="150" src="https://storage.googleapis.com/a1aa/image/bd97055b-ccc7-41e5-d130-c25b7e2f9e6f.jpg" width="150"/>
+      <h3 class="text-xl font-semibold mb-2">
+       Unlimited Plan
+      </h3>
+      <p class="text-gray-600">
+       RAM: Unlimited
+      </p>
+      <p class="text-gray-600">
+       CPU: Unlimited
+      </p>
+      <p class="text-gray-600">
+       Disk: Unlimited
+      </p>
+     </div>
+    </div>
+   </section>
+   <section class="max-w-3xl mx-auto mt-16 bg-white rounded-lg shadow p-6" id="about">
+    <h2 class="text-3xl font-semibold text-indigo-700 mb-4 text-center">
+     About This Service
+    </h2>
+    <p class="text-gray-700 leading-relaxed">
+     This website automates the creation of server panels based on predefined plans. By entering a username and selecting a plan, the system will generate a server with the specified RAM, CPU, and disk space. The backend integration uses your provided API keys and settings to create the server on your panel host.
+    </p>
+    <p class="text-gray-700 leading-relaxed mt-4">
+     The plans range from 1GB RAM with 40% CPU to unlimited resources. Each plan is designed to fit different user needs and workloads.
+    </p>
+    <p class="text-gray-700 leading-relaxed mt-4">
+     Please ensure you have the necessary permissions and API keys configured correctly for the automation to work.
+    </p>
+   </section>
+  </main>
+  <footer class="bg-white border-t border-gray-200 py-6 mt-16">
+   <div class="container mx-auto px-4 text-center text-gray-600 text-sm">
+    © 2025 KyxzanTzy. All rights reserved.
+   </div>
+  </footer>
+  <script>
+   // Mobile menu toggle
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Capitalize function
+    function capital(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    // Format date function
+    function tanggal(timestamp) {
+      const d = new Date(timestamp);
+      return d.toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
+    }
+
+    // Simulate crypto.randomBytes(2).toString('hex')
+    function randomHex(len = 4) {
+      let result = '';
+      const characters = 'abcdef0123456789';
+      for (let i = 0; i < len; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+      return result;
+    }
+
+    // Global settings as per user request
+    // WARNING: These API keys are directly exposed in the frontend (browser).
+    // For production or sensitive data, it's highly recommended to move
+    // API interactions to a secure backend (e.g., using Vercel Serverless Functions)
+    // and use environment variables for API keys there.
+    const globalSettings = {
+      eggV2: "15", // Egg ID
+      nestidV2: "5", // Nest ID
+      locV2: "1", // Location ID
+      domainV2: "https://https://kyxzanler.cjdw.tech",
+      apikeyV2: "ptla_co0AqzMKBwGdqLCQpmGKRlXt6zMoGzuebsB6h20HBV9", // Exposed API Key
+      capikeyV2: "ptlc_nMPnl13wHDUjp4Mo768ojyGK8cb45zOIFe07Q8IFX3s" // Exposed API Key
+    };
+
+    // Plan specs mapping
+    const planSpecs = {
+      "1gb-v2": { ram: "1000", disk: "1000", cpu: "40" },
+      "2gb-v2": { ram: "2000", disk: "1000", cpu: "60" },
+      "3gb-v2": { ram: "3000", disk: "2000", cpu: "80" },
+      "4gb-v2": { ram: "4000", disk: "2000", cpu: "100" },
+      "5gb-v2": { ram: "5000", disk: "3000", cpu: "120" },
+      "6gb-v2": { ram: "6000", disk: "3000", cpu: "140" },
+      "7gb-v2": { ram: "7000", disk: "4000", cpu: "160" },
+      "8gb-v2": { ram: "8000", disk: "4000", cpu: "180" },
+      "9gb-v2": { ram: "9000", disk: "5000", cpu: "200" },
+      "10gb-v2": { ram: "10000", disk: "5000", cpu: "220" },
+      "unlimited-v2": { ram: "0", disk: "0", cpu: "0" }
+    };
+
+    // Simulate isCreator check (for demo, always true)
+    const isCreator = true;
+
+    // Capitalize username for display
+    function capitalizeUsername(username) {
+      return username
+        .split(/[\s-_]+/)
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ');
+    }
+
+    // Form submission handler
+    document.getElementById('panelForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const usernameInput = e.target.username.value.trim();
+      const planInput = e.target.plan.value;
+
+      const resultDiv = document.getElementById('result');
+      const errorDiv = document.getElementById('error');
+      resultDiv.classList.add('hidden');
+      errorDiv.classList.add('hidden');
+      resultDiv.textContent = '';
+      errorDiv.textContent = '';
+
+      if (!isCreator) {
+        errorDiv.textContent = "You do not have permission to create a panel.";
+        errorDiv.classList.remove('hidden');
+        return;
+      }
+
+      if (!usernameInput) {
+        errorDiv.textContent = "Please enter a username.";
+        errorDiv.classList.remove('hidden');
+        return;
+      }
+
+      if (!planInput || !(planInput in planSpecs)) {
+        errorDiv.textContent = "Please select a valid plan.";
+        errorDiv.classList.remove('hidden');
+        return;
+      }
+
+      // Set global.panel to username
+      const panel = usernameInput.toLowerCase();
+
+      // Get specs for selected plan
+      const specs = planSpecs[planInput];
+      let ram = specs.ram;
+      let disk = specs.disk;
+      let cpu = specs.cpu;
+
+      // Prepare user data
+      const username = panel;
+      const email = username + "@gmail.com";
+      const name = capitalizeUsername(username) + " Server";
+      const password = username + randomHex(4);
+
+      // Show loading message
+      resultDiv.textContent = "Creating user and server panel, please wait...";
+      resultDiv.classList.remove('hidden');
+
+      try {
+        // Create user
+        const userResponse = await fetch(globalSettings.domainV2 + "/api/application/users", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + globalSettings.apikeyV2,
+          },
+          body: JSON.stringify({
+            email: email,
+            username: username.toLowerCase(),
+            first_name: name,
+            last_name: "Server",
+            language: "en",
+            password: password,
+          }),
+        });
+        const userData = await userResponse.json();
+        if (userData.errors) {
+          throw new Error(JSON.stringify(userData.errors[0], null, 2));
+        }
+        const user = userData.attributes;
+        const desc = tanggal(Date.now());
+        const usr_id = user.id;
+
+        // Get egg startup command
+        const eggResponse = await fetch(
+          globalSettings.domainV2 + `/api/application/nests/${globalSettings.nestidV2}/eggs/${globalSettings.eggV2}`,
+          {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + globalSettings.apikeyV2,
+            },
+          }
+        );
+        const eggData = await eggResponse.json();
+        if (eggData.errors) {
+          throw new Error(JSON.stringify(eggData.errors[0], null, 2));
+        }
+        const startup_cmd = eggData.attributes.startup;
+
+        // Create server
+        const serverResponse = await fetch(globalSettings.domainV2 + "/api/application/servers", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + globalSettings.apikeyV2,
+          },
+          body: JSON.stringify({
+            name: name,
+            description: desc,
+            user: usr_id,
+            egg: parseInt(globalSettings.eggV2),
+            docker_image: "ghcr.io/parkervcp/yolks:nodejs_20",
+            startup: startup_cmd,
+            environment: {
+              INST: "npm",
+              USER_UPLOAD: "0",
+              AUTO_UPDATE: "0",
+              CMD_RUN: "npm start",
+            },
+            limits: {
+              memory: ram,
+              swap: 0,
+              disk: disk,
+              io: 500,
+              cpu: cpu,
+            },
+            feature_limits: {
+              databases: 5,
+              backups: 5,
+              allocations: 5,
+            },
+            deploy: {
+              locations: [parseInt(globalSettings.locV2)],
+              dedicated_ip: false,
+              port_range: [],
+            },
+          }),
+        });
+        const serverData = await serverResponse.json();
+        if (serverData.errors) {
+          throw new Error(JSON.stringify(serverData.errors[0], null, 2));
+        }
+        const server = serverData.attributes;
+
+        // Format specs display
+        function formatSpec(value) {
+          if (value === "0") return "Unlimited";
+          if (value.length > 4) return value.slice(0, 2) + "GB";
+          return value.charAt(0) + "GB";
+        }
+
+        // Prepare result text
+        const resultText = `✅ Panel Created Successfully!
+
+📡 Server ID: 18
+👤 Username: ${user.username}
+🔐 Password: ${password}
+
+🌐 Server Specifications:
+- RAM: ${formatSpec(ram)}
+- Disk: ${formatSpec(disk)}
+- CPU: ${cpu === "0" ? "Unlimited" : cpu + "%"}
+- Node: 2 0.0000001Ms
+🌍 Panel Host: ${globalSettings.domainV2}
+
+Terms & Conditions:
+- Panel expires in 1 month
+- Keep this data safe
+- 15 days warranty (1x replacement)
+- Warranty claim requires proof of purchase chat
+`;
+
+        resultDiv.textContent = resultText;
+      } catch (error) {
+        errorDiv.textContent = "Error: " + error.message;
+        errorDiv.classList.remove('hidden');
+        resultDiv.classList.add('hidden');
+      }
+    });
+  </script>
+ </body>
+</html>
