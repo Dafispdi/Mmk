@@ -1,0 +1,18 @@
+{
+  "name": "panel-creator-vercel",
+  "version": "1.0.0",
+  "description": "Frontend and backend for Pterodactyl panel creation on Vercel.",
+  "main": "api/create-panel.js",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": ["vercel", "serverless", "pterodactyl", "automation"],
+  "author": "Kyxzan Hosting Official",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "serve": "^14.0.0"
+  }
+}
