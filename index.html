@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Panel dengan Admin</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+  body { background: linear-gradient(to bottom right, #0f172a, #1e1b4b, #312e81); color: white; font-family: 'Inter', sans-serif; }
+</style>
+</head>
+<body class="bg-gray-950 min-h-screen flex flex-col">
+  <!-- Login Overlay -->
+  <div id="loginOverlay" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center">
+    <div class="bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-sm border border-white/10">
+      <h2 class="text-2xl font-semibold text-center text-indigo-400 mb-4">Login Your Panel</h2>
+      <input id="loginUser" placeholder="Username" type="text" class="w-full mb-3 px-4 py-2 border border-white/20 bg-white/10 text-white placeholder-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400"/>
+      <input id="loginPass" placeholder="Password" type="password" class="w-full mb-3 px-4 py-2 border border-white/20 bg-white/10 text-white placeholder-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400"/>
+      <label class="text-sm text-gray-300 flex items-center mt-2 space-x-2">
+        <input type="checkbox" onclick="togglePassword()" class="accent-indigo-500 rounded-xl"><span>Tampilkan Password</span>
+      </label>
+      <button onclick="doLogin()" class="w-full bg-indigo-600 text-white py-2 rounded-xl hover:bg-indigo-700 transition mt-4">Login</button>
+      <p id="loginError" class="text-red-400 text-center mt-3 hidden">Login gagal. Username atau password salah.</p>
+    </div>
+  </div>  <!-- Dashboard Menu -->  <main id="dashboardMenu" class="flex-grow flex flex-col items-center justify-center min-h-screen hidden">
+    <div class="w-full max-w-md p-6 rounded-2xl bg-gray-900 shadow-2xl">
+      <h2 class="text-xl font-bold mb-6 text-indigo-300 text-center flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-indigo-400 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" d="M3 10h3m0 0V7a4 4 0 014-4h4a4 4 0 014 4v3m-12 0v10a2 2 0 002 2h8a2 2 0 002-2V10m-12 0h12"/></svg>Available Feature
+      </h2>
+      <div class="grid grid-cols-1 gap-4">
+        <div onclick="showAdminPanel()" class="flex items-center gap-3 p-4 rounded-xl bg-gray-800 hover:bg-indigo-900 cursor-pointer transition">
+          <svg class="w-7 h-7 text-sky-400" fill="currentColor" viewBox="0 0 20 20"><path d="M18 8a6 6 0 11-12 0 6 6 0 0112 0zM2 16a8 8 0 1116 0v1a1 1 0 01-1 1H3a1 1 0 01-1-1v-1z"/></svg>
+          <div>
+            <div class="font-semibold text-lg">Admin Panel</div>
+            <div class="text-gray-300 text-sm">Create Admin Panel</div>
+          </div>
+        </div>
+        <div onclick="showPanel()" class="flex items-center gap-3 p-4 rounded-xl bg-gray-800 hover:bg-indigo-900 cursor-pointer transition">
+          <svg class="w-7 h-7 text-cyan-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 13H9v-2h2v2zm0-4H9V7h2v4z"/></svg>
+          <div>
+            <div class="font-semibold text-lg">Panel</div>
+            <div class="text-gray-300 text-sm">Create Server Panel</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>  <!-- Admin Panel Modal -->  <div id="adminPanelModal" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center hidden">
+    <div class="bg-gray-900 p-6 rounded-xl shadow-xl w-full max-w-sm">
+      <h3 class="text-lg font-semibold text-indigo-400 mb-4 text-center">Create Admin Panel</h3>
+      <input id="adminNameInput" placeholder="Admin Name/Username" type="text" class="w-full mb-3 px-4 py-2 border border-white/20 bg-white/10 text-white placeholder-gray-300 rounded-xl focus:outline-none"/>
+      <button onclick="createAdminPanel()" class="w-full bg-indigo-600 py-2 rounded-xl hover:bg-indigo-700 text-white mb-4">Create Admin</button>
+      <div id="adminPanelResult" class="text-green-400 mt-3 text-center hidden"></div>
+      <div id="adminPanelError" class="text-red-400 mt-3 text-center hidden"></div>
+      <button onclick="closeAdminPanel()" class="w-full mt-4 text-gray-400 hover:text-white">Close</button>
+    </div>
+  </div><script>
+  function createAdminPanel() {
+    const nameInput = document.getElementById("adminNameInput").value.trim();
+    const resDiv = document.getElementById("adminPanelResult"), errDiv = document.getElementById("adminPanelError");
+    resDiv.classList.add("hidden"); errDiv.classList.add("hidden");
+    if (!nameInput) {
+      errDiv.textContent = "Nama admin tidak boleh kosong.";
+      errDiv.classList.remove("hidden");
+      return;
+    }
+    resDiv.textContent = "Processing...";
+    resDiv.classList.remove("hidden");
+    fetch("/api/create-admin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: nameInput })
+    }).then(res => res.json().then(d => ({ ok: res.ok, data: d }))).then(({ ok, data }) => {
+      if (ok) {
+        resDiv.innerHTML = `✅ Admin Created Successfully!<br>👤 Username: <b>${data.username || 'N/A'}</b><br>📧 Email: <b>${data.email || 'N/A'}</b><br>🔐 Password: <b>${data.password || 'N/A'}</b>`;
+      } else {
+        errDiv.textContent = data.error || "Gagal membuat admin.";
+        errDiv.classList.remove("hidden");
+        resDiv.classList.add("hidden");
+      }
+    }).catch(() => {
+      errDiv.textContent = "Network error!";
+      errDiv.classList.remove("hidden");
+      resDiv.classList.add("hidden");
+    });
+  }
+</script></body>
+</html>
