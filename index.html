@@ -2,7 +2,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Panel dengan Admin</title>
+<title>KYXZAN OFFICIAL WEB AUTOMATIC</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
 <style>
@@ -82,6 +82,24 @@
       errDiv.classList.remove("hidden");
       resDiv.classList.add("hidden");
     });
+  }
+<script>
+  function doLogin() {
+    const user = document.getElementById("loginUser").value.trim();
+    const pass = document.getElementById("loginPass").value.trim();
+    const error = document.getElementById("loginError");
+
+    if (user === "admin" && pass === "kimganz") {
+      document.getElementById("loginOverlay").classList.add("hidden");
+      document.getElementById("dashboardMenu").classList.remove("hidden");
+    } else {
+      error.classList.remove("hidden");
+    }
+  }
+
+  function togglePassword() {
+    const input = document.getElementById("loginPass");
+    input.type = input.type === "password" ? "text" : "password";
   }
 </script></body>
 </html>
