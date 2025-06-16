@@ -54,52 +54,53 @@
       <button onclick="closeAdminPanel()" class="w-full mt-4 text-gray-400 hover:text-white">Close</button>
     </div>
   </div><script>
-  function createAdminPanel() {
-    const nameInput = document.getElementById("adminNameInput").value.trim();
-    const resDiv = document.getElementById("adminPanelResult"), errDiv = document.getElementById("adminPanelError");
-    resDiv.classList.add("hidden"); errDiv.classList.add("hidden");
-    if (!nameInput) {
-      errDiv.textContent = "Nama admin tidak boleh kosong.";
-      errDiv.classList.remove("hidden");
-      return;
-    }
-    resDiv.textContent = "Processing...";
-    resDiv.classList.remove("hidden");
-    fetch("/api/create-admin", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: nameInput })
-    }).then(res => res.json().then(d => ({ ok: res.ok, data: d }))).then(({ ok, data }) => {
-      if (ok) {
-        resDiv.innerHTML = `✅ Admin Created Successfully!<br>👤 Username: <b>${data.username || 'N/A'}</b><br>📧 Email: <b>${data.email || 'N/A'}</b><br>🔐 Password: <b>${data.password || 'N/A'}</b>`;
-      } else {
-        errDiv.textContent = data.error || "Gagal membuat admin.";
-        errDiv.classList.remove("hidden");
-        resDiv.classList.add("hidden");
-      }
-    }).catch(() => {
-      errDiv.textContent = "Network error!";
+  <script>
+function createAdminPanel() {
+  const nameInput = document.getElementById("adminNameInput").value.trim();
+  const resDiv = document.getElementById("adminPanelResult"), errDiv = document.getElementById("adminPanelError");
+  resDiv.classList.add("hidden"); errDiv.classList.add("hidden");
+  if (!nameInput) {
+    errDiv.textContent = "Nama admin tidak boleh kosong.";
+    errDiv.classList.remove("hidden");
+    return;
+  }
+  resDiv.textContent = "Processing...";
+  resDiv.classList.remove("hidden");
+  fetch("/api/create-admin", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: nameInput })
+  }).then(res => res.json().then(d => ({ ok: res.ok, data: d }))).then(({ ok, data }) => {
+    if (ok) {
+      resDiv.innerHTML = `✅ Admin Created Successfully!<br>👤 Username: <b>${data.username || 'N/A'}</b><br>📧 Email: <b>${data.email || 'N/A'}</b><br>🔐 Password: <b>${data.password || 'N/A'}</b>`;
+    } else {
+      errDiv.textContent = data.error || "Gagal membuat admin.";
       errDiv.classList.remove("hidden");
       resDiv.classList.add("hidden");
-    });
-  }
-<script>
-  function doLogin() {
-    const user = document.getElementById("loginUser").value.trim();
-    const pass = document.getElementById("loginPass").value.trim();
-    const error = document.getElementById("loginError");
-
-    if (user === "admin" && pass === "kimganz") {
-      document.getElementById("loginOverlay").classList.add("hidden");
-      document.getElementById("dashboardMenu").classList.remove("hidden");
-    } else {
-      error.classList.remove("hidden");
     }
-  }
+  }).catch(() => {
+    errDiv.textContent = "Network error!";
+    errDiv.classList.remove("hidden");
+    resDiv.classList.add("hidden");
+  });
+}
 
-  function togglePassword() {
-    const input = document.getElementById("loginPass");
-    input.type = input.type === "password" ? "text" : "password";
+function doLogin() {
+  const user = document.getElementById("loginUser").value.trim();
+  const pass = document.getElementById("loginPass").value.trim();
+  const error = document.getElementById("loginError");
+
+  if (user === "admin" && pass === "kimganz") {
+    document.getElementById("loginOverlay").classList.add("hidden");
+    document.getElementById("dashboardMenu").classList.remove("hidden");
+  } else {
+    error.classList.remove("hidden");
   }
+}
+
+function togglePassword() {
+  const input = document.getElementById("loginPass");
+  input.type = input.type === "password" ? "text" : "password";
+}
 </script></body>
 </html>
