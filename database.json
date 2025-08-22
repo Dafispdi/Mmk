@@ -1,4 +1,4 @@
 [
   { "username": "testing", "test": "pass1", "expireAt": "2025-09-01T12:00:00Z" },
-  { "username": "adminkyxzan",  "saturn": "secret" }
+  { "username": "adminkyxzan",  "password": "saturn" }
 ]
