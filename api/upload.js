@@ -1,3 +1,6 @@
+export const config = {
+  runtime: "nodejs18.x"
+};
 import fetch from "node-fetch";
 import FormData from "form-data";
 
