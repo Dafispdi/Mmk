@@ -2,7 +2,6 @@ const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fet
 const FormData = require("form-data");
 
 module.exports = async (req, res) => {
-  // CORS headers
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -18,12 +17,10 @@ module.exports = async (req, res) => {
   }
 
   try {
-    // Ambil file dari request
     const chunks = [];
     for await (const chunk of req) chunks.push(chunk);
     const buffer = Buffer.concat(chunks);
 
-    // Kirim ke Top4Top
     const form = new FormData();
     form.append("file_1", buffer, {
       filename: "upload_" + Date.now() + ".jpg",
@@ -39,17 +36,20 @@ module.exports = async (req, res) => {
 
     const html = await response.text();
 
-    // 🔍 Ambil semua URL dari hasil upload
-    const allLinks = html.match(/https?:\/\/[a-z0-9\-]+\.top4top\.io\/[^\s"'<>]+/gi);
+    // 🔍 Tambahkan log isi respon HTML
+    console.log("===== HTML FROM TOP4TOP (FIRST 600 CHARS) =====");
+    console.log(html.slice(0, 600));
+    console.log("==============================================");
 
-    // Ambil link gambar langsung (biasanya file jpg/png/zip/mp4)
+    const allLinks = html.match(/https?:\/\/[a-z0-9\-]+\.top4top\.io\/[^\s"'<>]+/gi);
     const fileLink = allLinks?.find(l => /\.(jpg|jpeg|png|gif|pdf|zip|mp4|mp3|webp)$/i.test(l));
-    // Ambil link hapus (biasanya mengandung /del dan di domain top4top.io tanpa subdomain)
     const deleteLink = allLinks?.find(l => /top4top\.io\/del/i.test(l));
 
     if (!fileLink) {
-      console.error("❌ Tidak menemukan direct link di HTML:", html.slice(0, 500));
-      res.status(500).json({ error: "Upload success, but no direct link found" });
+      res.status(500).json({
+        error: "Upload success, but no direct link found",
+        debug: html.slice(0, 500)
+      });
       return;
     }
 
