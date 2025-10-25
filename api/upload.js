@@ -1,21 +1,30 @@
 export const config = {
-  runtime: "nodejs18.x"
+  runtime: "nodejs"
 };
+
 import fetch from "node-fetch";
 import FormData from "form-data";
 
 export default async function handler(req, res) {
-  // ✅ Tambah CORS biar bisa di-fetch dari browser
+  // ✅ Izinkan CORS biar bisa diakses dari browser langsung
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  if (req.method === "OPTIONS") return res.status(200).end();
-  if (req.method !== "POST")
-    return res.status(405).json({ error: "Only POST method allowed" });
+  // ✅ Tangani preflight (CORS OPTIONS)
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
+
+  // ✅ Batasi hanya method POST
+  if (req.method !== "POST") {
+    res.status(405).json({ error: "Only POST method allowed" });
+    return;
+  }
 
   try {
-    // Terima file dari FormData
+    // Terima file dari browser
     const chunks = [];
     for await (const chunk of req) chunks.push(chunk);
     const buffer = Buffer.concat(chunks);
@@ -35,6 +44,30 @@ export default async function handler(req, res) {
     });
 
     const html = await response.text();
+
+    // 🔍 Cari link hasil upload dari HTML
+    let link = null;
+    const match = html.match(/https?:\/\/[a-z0-9\-]+\.top4top\.io\/[^\s'"]+/i);
+    if (match) link = match[0];
+
+    // Format ulang link biar langsung ke file
+    if (link && !link.match(/\.(jpg|png|jpeg|pdf|zip|mp4|mp3|webp)$/i)) {
+      const dir = link.split("/")[2].replace(".top4top.io", "");
+      const fileCode = (link.match(/\/([a-z0-9_]+)$/i) || [])[1] || "";
+      link = `https://${dir}.top4top.io/${fileCode}.jpg`;
+    }
+
+    if (!link) {
+      res.status(500).json({ error: "Upload success, but link not found" });
+      return;
+    }
+
+    res.status(200).json({ success: true, link });
+  } catch (err) {
+    console.error("Upload error:", err);
+    res.status(500).json({ error: "Failed to upload", message: err.message });
+  }
+}    const html = await response.text();
 
     // 🔍 Regex baru: ambil link view & link langsung (Top4Top update struktur)
     let link = null;
