@@ -45,7 +45,7 @@ module.exports = async (req, res) => {
     if (link && !link.match(/\.(jpg|png|jpeg|pdf|zip|mp4|mp3|webp)$/i)) {
       const dir = link.split("/")[2].replace(".top4top.io", "");
       const fileCode = (link.match(/\/([a-z0-9_]+)$/i) || [])[1] || "";
-      link = `https://${dir}.top4top.io/${fileCode}.jpg`;
+      link = `https://top4top.io/${fileCode}.jpg`;
     }
 
     if (!link) {
