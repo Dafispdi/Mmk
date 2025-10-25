@@ -2,7 +2,7 @@ const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fet
 const FormData = require("form-data");
 
 module.exports = async (req, res) => {
-  // CORS headers
+  // CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -37,7 +37,7 @@ module.exports = async (req, res) => {
 
     const html = await response.text();
 
-    // Cari link file
+    // Cari link hasil upload
     let link = null;
     const match = html.match(/https?:\/\/[a-z0-9\-]+\.top4top\.io\/[^\s'"]+/i);
     if (match) link = match[0];
