@@ -1,8 +1,4 @@
 {
-  "name": "top4top-uploader",
-  "version": "1.0.0",
-  "description": "Serverless uploader for Top4Top.io via Vercel",
-  "type": "module",
   "dependencies": {
     "node-fetch": "^3.3.2",
     "form-data": "^4.0.0"
